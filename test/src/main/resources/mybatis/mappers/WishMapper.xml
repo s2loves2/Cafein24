@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.LCY.myapp.model.dao.WishMapper">
+	<insert id="wishListInsert" parameterType="com.LCY.myapp.model.dto.Wish" useGeneratedKeys="true" keyProperty="wish_num">
+		insert into wish(user_id, cafe_code, cafe_name, cafe_addr)
+		values(#{user_id}, #{cafe_code}, #{cafe_name}, #{cafe_addr})
+	</insert>
+
+	<delete id="wishListDelete" parameterType="com.LCY.myapp.model.dto.Wish">
+		delete from wish where user_id=#{user_id} AND cafe_code=#{cafe_code}
+	</delete>
+
+	<select id="WishListAll" parameterType="int" resultType="com.LCY.myapp.model.dto.Wish">
+		select * from wish where wish_num > 0
+	</select>
+		
+	<select id="searchWishListByUser" parameterType="String" resultType="com.LCY.myapp.model.dto.Wish">
+		select * from wish where user_id=#{user_id}
+	</select>
+	
+	<select id="searchWishListByUserAndCafeCode" resultType="Boolean">
+		select if(count(*)>0, 'true', 'false') from wish where user_id=#{user_id} AND cafe_code=#{cafe_code}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from wish where wish_num=#{wish_num}
+	</delete>
+</mapper>

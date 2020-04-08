@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- JDBC dataSource 설정 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="com.mysql.cj.jdbc.Driver"
+		p:url="jdbc:mysql://127.0.0.1:3306/cafe?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;characterEncoding=utf8"
+		p:username="root" 
+		p:password="1234" />
+
+	<!-- DB Transaction Manager 빈 설정 -->
+	<!-- <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+		<property name="dataSource"> <ref bean="dataSource"/> </property> </bean> -->
+
+	<!-- SessionFactory 빈 설정 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mapperLocations" value="classpath:/mybatis/mappers/**/*Mapper.xml" />
+		<property name="typeAliasesPackage" value="com.LCY.myapp" />
+	</bean>
+
+	<!-- mapper scan 설정 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.LCY.myapp.model.dao" />
+	</bean>
+
+	<mybatis-spring:scan base-package="classpath:/mybatis/mappers" />
+
+
+</beans>

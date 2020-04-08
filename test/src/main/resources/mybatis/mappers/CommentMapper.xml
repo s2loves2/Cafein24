@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.LCY.myapp.model.dao.CommentMapper">
+	<select id="searchCommentByCafe" resultType="com.LCY.myapp.model.dto.Comment">
+		select * from comment where cafe_code=#{cafe_code} order by comment_date desc 
+			LIMIT #{criteriaVO.pageStart}, #{criteriaVO.perPageNum}
+	</select>
+	
+	<insert id="commentInsert" parameterType="com.LCY.myapp.model.dto.Comment">
+		insert into comment(user_id, cafe_code, content, comment_date, user_star) 
+		values(#{user_id}, #{cafe_code}, #{content}, #{comment_date}, #{user_star})
+	</insert>
+	
+	<select id="getCommentCount" parameterType="String" resultType="Integer">
+		select count(*) from comment where cafe_code=#{cafe_code}
+	</select>
+	
+	<delete id="commentDelete" parameterType="Integer">
+		delete from comment where cnum=#{cnum}
+	</delete>
+	
+	<select id="commentStarSum" parameterType="String" resultType="Double">
+		select avg(user_star) from comment where cafe_code=#{cafe_code}
+	</select>
+</mapper>
